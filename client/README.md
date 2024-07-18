@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+﻿# Movie-Ticket-Booking-WebApp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Bugs
 
-## Available Scripts
+- [x] Seat Booking Matrix is on the Left
+- [x] Home Button is not redirecting to the Home page
+- [x] Role-Based Access Control
+- [x] Booked Seats Being Considered for Booking
+- [x] Users can book from previous dates
+- [ ] Email Not Comming
+- [ ] OTP Not Comming
+- [ ] Admin not able to see its booking
+- [ ] When a new user logged in, The home page still shows the details of the previous User until we refresh the page. Probably this is a rerendering Issue.
 
-In the project directory, you can run:
+## Bug 1: Moving the Seat Booking Matrix to the Middle.
 
-### `npm start`
+## Bug 2: Added Hyperlinks to Home & BookMyShow Component
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Bug 3: Role-Based Access Control
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Problem:
 
-### `npm test`
+Previously, users were able to access the `/admin` and `/partner` panels regardless of their roles. Similarly, partners could access the `/admin` panel, leading to unauthorized access to restricted areas of the application.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Expected Behavior
 
-### `npm run build`
+Users should only be able to access panels that correspond to their roles:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Admins should have access to the `/admin` panel.
+- Partners should have access to the `/partner` panel.
+- Unauthorized users should not have access to any restricted panels and should be redirected appropriately.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Solution:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Implemented a role-based access control system to ensure that users can only access panels for which they have the appropriate roles. Unauthorized users attempting to access restricted panels will be redirected to the Unauthorized page (`/unauthorised`).
 
-### `npm run eject`
+## Bug 4: Booked Seats Being Considered for Booking
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Issue Description
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+When a user clicks on a seat that has already been booked, the "Pay Now" button appears, and the amount of the booked seat is included in the total price and selected seats. This should not happen, as booked seats should not be available for selection.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Expected Behavior
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Users should not be able to select seats that have already been booked. If a user attempts to select a booked seat, an error message should be displayed, and the "Pay Now" button should be disabled. The user should only be able to select unbooked seats for booking.
 
-## Learn More
+### Solution
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Implemented a check to ensure that only unbooked seats can be selected. If a user attempts to select a booked seat, an error message will be displayed, and the "Pay Now" button will be disabled. Once the user selects only unbooked seats, the "Pay Now" button will be enabled, and the user can proceed with the booking.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Bug 5: Date Selection in Booking System
 
-### Code Splitting
+### Problem:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Users are able to book shows for past dates, which is not a valid use case. The system should restrict users from selecting past dates in the date picker input to ensure that all bookings are for upcoming shows only.
 
-### Analyzing the Bundle Size
+### Expected Behavior
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Users should only be able to book shows for today or future dates. The system should restrict the selection of past dates in the date picker input, ensuring that all bookings are relevant and valid for upcoming shows only.
 
-### Making a Progressive Web App
+### Solution:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Modified the date selection input to disable all past dates. This was achieved by setting the `min` attribute of the date input field to the current date. Now, users cannot select a date earlier than the current day, ensuring that all bookings are for valid showtimes.
